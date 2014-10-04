@@ -30,7 +30,7 @@ TString getWeightFileName(TString method){
         return out;
 }
 
-void TMVAReaderTest(){
+void TMVAReader(){
 #ifdef __CINT__
         gROOT->ProcessLine( ".O0" ); // turn off optimization in CINT
 #endif
@@ -124,20 +124,21 @@ void TMVAReaderTest(){
         reader->AddSpectator("TagVarCSV_trackSip2dSig_ThirdLeading",&TagVarCSV_trackSip2dSig_ThirdLeading);
 
         //book the MVA method(s)
-        std::vector< TString > methods;
-        methods.push_back("BDTG"); //T1000_D2
-        methods.push_back("BDTG_T1000_D5");
-        methods.push_back("BDTG_T500_D2");
-        methods.push_back("BDTG_T500_D5");
-        for (int methodNum = 0; methodNum < methods.size(); methodNum++){
-                TString method = methods.at( methodNum );
-                reader->BookMVA( method+" method",getWeightFileName(method) );
-        }
+//         std::vector< TString > methods;
+//         methods.push_back("BDTG"); //T1000_D2
+//         methods.push_back("BDTG_T1000_D5");
+//         methods.push_back("BDTG_T500_D2");
+//         methods.push_back("BDTG_T500_D5");
+//         for (int methodNum = 0; methodNum < methods.size(); methodNum++){
+//                 TString method = methods.at( methodNum );
+//                 reader->BookMVA( method+" method",getWeightFileName(method) );
+//         }
+        reader->BookMVA( "BDTG method", "weights/TMVATrainer_VtxCat0_BDTG.weights.xml" );
 
         // input tree and such
         // TString rootfile = TString::Format("CMSSW_Job_%i.root",jobNum);
         // TString infilename = "/cms/skaplan/BoostedBTagValidation/CMSSW_5_3_18/src/MyAnalysis/TagVarExtractor/test/qcd300-470_output/output/"+rootfile;
-        TString infilename="./TagVarTree_RadionM800.root";
+        TString infilename="QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_JetTaggingVariables_evaluation.root";
         TFile in(infilename);
         TTree* intree = (TTree*)in.Get("tagVars/ttree");
 
@@ -155,6 +156,7 @@ void TMVAReaderTest(){
         intree->SetBranchAddress("TagVarCSV_vertexNTracks",&TagVarCSV_vertexNTracks);
         intree->SetBranchAddress("TagVarCSV_vertexEnergyRatio",&TagVarCSV_vertexEnergyRatio);
         intree->SetBranchAddress("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
+        intree->SetBranchAddress("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
 
         //set the branches for the spectator variables also in case they're needed
         intree->SetBranchAddress("Jet_pt",&Jet_pt);
@@ -173,7 +175,6 @@ void TMVAReaderTest(){
         intree->SetBranchAddress("TagVarCSV_trackSip2dValAboveCharm",&TagVarCSV_trackSip2dValAboveCharm);
         intree->SetBranchAddress("TagVarCSV_trackSip3dValAboveCharm",&TagVarCSV_trackSip3dValAboveCharm);
         intree->SetBranchAddress("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
-        intree->SetBranchAddress("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
         intree->SetBranchAddress("TagVarCSV_jetNSecondaryVertices",&TagVarCSV_jetNSecondaryVertices);
         intree->SetBranchAddress("TagVarCSV_vertexJetDeltaR",&TagVarCSV_vertexJetDeltaR);
         intree->SetBranchAddress("TagVarCSV_flightDistance2dVal",&TagVarCSV_flightDistance2dVal);
@@ -186,14 +187,14 @@ void TMVAReaderTest(){
         TH1F* hBDTGDiscSig = new TH1F("hBDTGDiscSig","",1000,-5,5);
         TH1F* hBDTGDiscBkg = new TH1F("hBDTGDiscBkg","",1000,-5,5);
 
-        TH1F* hBDTGT500D2DiscSig = new TH1F("hBDTGT500D2DiscSig","",1000,-5,5);
-        TH1F* hBDTGT500D2DiscBkg = new TH1F("hBDTGT500D2DiscBkg","",1000,-5,5);
-
-        TH1F* hBDTGT1000D5DiscSig = new TH1F("hBDTGT1000D5DiscSig","",1000,-5,5);
-        TH1F* hBDTGT1000D5DiscBkg = new TH1F("hBDTGT1000D5DiscBkg","",1000,-5,5);
-
-        TH1F* hBDTGT500D5DiscSig = new TH1F("hBDTGT500D5DiscSig","",1000,-5,5);
-        TH1F* hBDTGT500D5DiscBkg = new TH1F("hBDTGT500D5DiscBkg","",1000,-5,5);
+//         TH1F* hBDTGT500D2DiscSig = new TH1F("hBDTGT500D2DiscSig","",1000,-5,5);
+//         TH1F* hBDTGT500D2DiscBkg = new TH1F("hBDTGT500D2DiscBkg","",1000,-5,5);
+// 
+//         TH1F* hBDTGT1000D5DiscSig = new TH1F("hBDTGT1000D5DiscSig","",1000,-5,5);
+//         TH1F* hBDTGT1000D5DiscBkg = new TH1F("hBDTGT1000D5DiscBkg","",1000,-5,5);
+// 
+//         TH1F* hBDTGT500D5DiscSig = new TH1F("hBDTGT500D5DiscSig","",1000,-5,5);
+//         TH1F* hBDTGT500D5DiscBkg = new TH1F("hBDTGT500D5DiscBkg","",1000,-5,5);
 
         TH1F* hCSVDiscSig = new TH1F("hCSVDiscSig","",1000,-5,5);
         TH1F* hCSVDiscBkg = new TH1F("hCSVDiscBkg","",1000,-5,5);
@@ -203,12 +204,12 @@ void TMVAReaderTest(){
 
         hBDTGDiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
         hBDTGDiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
-        hBDTGT500D2DiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
-        hBDTGT500D2DiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
-        hBDTGT1000D5DiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
-        hBDTGT1000D5DiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
-        hBDTGT500D5DiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
-        hBDTGT500D5DiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
+//         hBDTGT500D2DiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
+//         hBDTGT500D2DiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
+//         hBDTGT1000D5DiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
+//         hBDTGT1000D5DiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
+//         hBDTGT500D5DiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
+//         hBDTGT500D5DiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
 
         hCSVDiscSig->GetXaxis()->SetTitle("CSV Discriminant");
         hCSVDiscBkg->GetXaxis()->SetTitle("CSV Discriminant");
@@ -220,57 +221,59 @@ void TMVAReaderTest(){
                 if (iEntry % 1000 == 0) std::cout << "Processing Entry #" << iEntry << std::endl;
                 intree->GetEntry(iEntry); //all variables now filled!
                 if (TagVarCSV_vertexCategory != 0) continue;
-                bool isB = ( abs(Jet_flavour) == 5 );
-                bool isLight = ( abs(Jet_flavour) == 1 || abs(Jet_flavour) == 2 || abs(Jet_flavour) == 3 || Jet_flavour == 21 );
+                bool isB = ( abs(int(Jet_flavour)) == 5 );
+                bool isLight = ( abs(int(Jet_flavour)) != 5 && abs(int(Jet_flavour)) != 4 );
                 float BDTG_Disc = reader->EvaluateMVA("BDTG method");
                 //std::cout << reader->EvaluateMVA("BDTG method") << std::endl;
-                float BDTG_T500_D5_Disc = reader->EvaluateMVA("BDTG_T500_D5 method");
-                float BDTG_T500_D2_Disc = reader->EvaluateMVA("BDTG_T500_D2 method");
-                float BDTG_T1000_D5_Disc = reader->EvaluateMVA("BDTG_T1000_D5 method");
+//                 float BDTG_T500_D5_Disc = reader->EvaluateMVA("BDTG_T500_D5 method");
+//                 float BDTG_T500_D2_Disc = reader->EvaluateMVA("BDTG_T500_D2 method");
+//                 float BDTG_T1000_D5_Disc = reader->EvaluateMVA("BDTG_T1000_D5 method");
                 if (isB) {
                         hBDTGDiscSig->Fill(BDTG_Disc);
-                        hBDTGT500D5DiscSig->Fill(BDTG_T500_D5_Disc);
-                        hBDTGT500D2DiscSig->Fill(BDTG_T500_D2_Disc);
-                        hBDTGT1000D5DiscSig->Fill(BDTG_T1000_D5_Disc);
+//                         hBDTGT500D5DiscSig->Fill(BDTG_T500_D5_Disc);
+//                         hBDTGT500D2DiscSig->Fill(BDTG_T500_D2_Disc);
+//                         hBDTGT1000D5DiscSig->Fill(BDTG_T1000_D5_Disc);
                         hCSVDiscSig->Fill(Jet_CSV);
                         hCSVIVFDiscSig->Fill(Jet_CSVIVF);
                 }
                 else if (isLight) {
                         hBDTGDiscBkg->Fill(BDTG_Disc);
-                        hBDTGT500D5DiscBkg->Fill(BDTG_T500_D5_Disc);
-                        hBDTGT500D2DiscBkg->Fill(BDTG_T500_D2_Disc);
-                        hBDTGT1000D5DiscBkg->Fill(BDTG_T1000_D5_Disc);
+//                         hBDTGT500D5DiscBkg->Fill(BDTG_T500_D5_Disc);
+//                         hBDTGT500D2DiscBkg->Fill(BDTG_T500_D2_Disc);
+//                         hBDTGT1000D5DiscBkg->Fill(BDTG_T1000_D5_Disc);
                         hCSVDiscBkg->Fill(Jet_CSV);
                         hCSVIVFDiscBkg->Fill(Jet_CSVIVF);
                 }
         }
-        // TString outname = TString::Format("TMVAanyl_QCD300-470Plots_%i.root",jobNum);
-        TString outname = "TMVAanyl_RadionM800_RadionTraining.root";
+
+        TString outname = "QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_VtxCat0_VtxCat0Training.root";
         TFile out(outname,"RECREATE");
         
         hBDTGDiscSig->Write();
         hBDTGDiscBkg->Write();
-        hBDTGT1000D5DiscSig->Write();
-        hBDTGT1000D5DiscBkg->Write();
-        hBDTGT500D2DiscSig->Write();
-        hBDTGT500D2DiscBkg->Write();
-        hBDTGT500D5DiscSig->Write();
-        hBDTGT500D5DiscBkg->Write();
+//         hBDTGT1000D5DiscSig->Write();
+//         hBDTGT1000D5DiscBkg->Write();
+//         hBDTGT500D2DiscSig->Write();
+//         hBDTGT500D2DiscBkg->Write();
+//         hBDTGT500D5DiscSig->Write();
+//         hBDTGT500D5DiscBkg->Write();
 
         hCSVDiscSig->Write();
         hCSVDiscBkg->Write();
+        hCSVIVFDiscSig->Write();
+        hCSVIVFDiscBkg->Write();
 
         out.Close();
 
         delete reader;
         delete hBDTGDiscSig;
         delete hBDTGDiscBkg;
-        delete hBDTGT1000D5DiscSig;
-        delete hBDTGT1000D5DiscBkg;
-        delete hBDTGT500D2DiscSig;
-        delete hBDTGT500D2DiscBkg;
-        delete hBDTGT500D5DiscSig;
-        delete hBDTGT500D5DiscBkg;
+//         delete hBDTGT1000D5DiscSig;
+//         delete hBDTGT1000D5DiscBkg;
+//         delete hBDTGT500D2DiscSig;
+//         delete hBDTGT500D2DiscBkg;
+//         delete hBDTGT500D5DiscSig;
+//         delete hBDTGT500D5DiscBkg;
         delete hCSVDiscSig;
         delete hCSVDiscBkg;
         delete hCSVIVFDiscSig;
