@@ -95,8 +95,6 @@ void TMVAReader(){
         reader->AddVariable("TagVarCSV_vertexMass",&TagVarCSV_vertexMass);
         reader->AddVariable("TagVarCSV_vertexNTracks",&TagVarCSV_vertexNTracks);
         reader->AddVariable("TagVarCSV_vertexEnergyRatio",&TagVarCSV_vertexEnergyRatio);
-        reader->AddVariable("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
-        reader->AddVariable("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
 
         reader->AddSpectator("Jet_pt",&Jet_pt);
         reader->AddSpectator("Jet_eta",&Jet_eta);
@@ -114,7 +112,7 @@ void TMVAReader(){
         reader->AddSpectator("TagVarCSV_trackSip2dValAboveCharm",&TagVarCSV_trackSip2dValAboveCharm);
         reader->AddSpectator("TagVarCSV_trackSip3dValAboveCharm",&TagVarCSV_trackSip3dValAboveCharm);
         reader->AddSpectator("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
-        //reader->AddSpectator("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
+        reader->AddSpectator("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
         reader->AddSpectator("TagVarCSV_jetNSecondaryVertices",&TagVarCSV_jetNSecondaryVertices);
         reader->AddSpectator("TagVarCSV_vertexJetDeltaR",&TagVarCSV_vertexJetDeltaR);
         reader->AddSpectator("TagVarCSV_flightDistance2dVal",&TagVarCSV_flightDistance2dVal);
@@ -123,6 +121,7 @@ void TMVAReader(){
         reader->AddSpectator("TagVarCSV_trackSip2dSig_Leading",&TagVarCSV_trackSip2dSig_Leading);
         reader->AddSpectator("TagVarCSV_trackSip2dSig_SecondLeading",&TagVarCSV_trackSip2dSig_SecondLeading);
         reader->AddSpectator("TagVarCSV_trackSip2dSig_ThirdLeading",&TagVarCSV_trackSip2dSig_ThirdLeading);
+        reader->AddSpectator("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
 
         //book the MVA method(s)
 //         std::vector< TString > methods;
@@ -134,7 +133,7 @@ void TMVAReader(){
 //                 TString method = methods.at( methodNum );
 //                 reader->BookMVA( method+" method",getWeightFileName(method) );
 //         }
-        reader->BookMVA( "BDTG method", "weights/TMVATrainer_AllVtx_BDTG.weights.xml" );
+        reader->BookMVA( "BDTG method", "weights/TMVATrainer_VtxCat1_BDTG.weights.xml" );
 
         // input tree and such
         // TString rootfile = TString::Format("CMSSW_Job_%i.root",jobNum);
@@ -221,9 +220,7 @@ void TMVAReader(){
         for(Long64_t iEntry = 0; iEntry < intree->GetEntries(); iEntry++){
                 if (iEntry % 1000 == 0) std::cout << "Processing Entry #" << iEntry << std::endl;
                 intree->GetEntry(iEntry); //all variables now filled!
-                //if (TagVarCSV_vertexCategory != 0) continue;
                 if (TagVarCSV_vertexCategory != 1) continue;
-                //if (TagVarCSV_vertexCategory != 2) continue;
                 bool isB = ( abs(int(Jet_flavour)) == 5 );
                 bool isLight = ( abs(int(Jet_flavour)) != 5 && abs(int(Jet_flavour)) != 4 );
                 float BDTG_Disc = reader->EvaluateMVA("BDTG method");
@@ -249,10 +246,7 @@ void TMVAReader(){
                 }
         }
 
-//      TString outname = "QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV.root";
-//      TString outname = "QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_VtxCat0.root";
-        TString outname = "QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_VtxCat1.root";
-//      TString outname = "QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_VtxCat2.root";
+        TString outname = "QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_VtxCat1_VtxCat1Training.root";
         TFile out(outname,"RECREATE");
         
         hBDTGDiscSig->Write();

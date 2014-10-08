@@ -1,0 +1,333 @@
+#include <cstdlib>
+#include <vector>
+#include <iostream>
+#include <map>
+#include <string>
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TString.h"
+#include "TSystem.h"
+#include "TROOT.h"
+#include "TStopwatch.h"
+
+#include "TMVAGui.C"
+
+#if not defined(__CINT__) || defined(__MAKECINT__)
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+#endif
+
+using namespace TMVA;
+
+TString getWeightFileName(TString method){
+        TString dir = "weights/";
+        TString prefix = "TMVATrainer_";
+        TString postfix = ".weights.xml";
+        TString out =  dir + prefix + method + postfix;
+        std::cout << "Reading from weight file: " << out << std::endl;
+        return out;
+}
+
+void TMVAReader(){
+#ifdef __CINT__
+    gROOT->ProcessLine( ".O0" ); // turn off optimization in CINT
+#endif
+
+    TMVA::Tools::Instance(); //loads libraries
+
+    TMVA::Reader *readerReco = new TMVA::Reader( "!Color" );
+    TMVA::Reader *readerPseudo = new TMVA::Reader( "!Color" );
+    TMVA::Reader *readerNo = new TMVA::Reader( "!Color" );
+
+    float Jet_pt;
+    float Jet_eta;
+    float Jet_phi;
+    float Jet_mass;
+    float Jet_flavour;
+    float Jet_nbHadrons;
+    float Jet_JP;
+    float Jet_JBP;
+    float Jet_CSV;
+    float Jet_CSVIVF;
+
+    // CSV TaggingVariables
+    // per jet
+    float TagVarCSV_trackJetPt;                           // track-based jet transverse momentum
+    float TagVarCSV_jetNTracks;                           // tracks associated to jet
+    float TagVarCSV_jetNTracksEtaRel;                     // tracks associated to jet for which trackEtaRel is calculated
+    float TagVarCSV_trackSumJetEtRatio;                   // ratio of track sum transverse energy over jet energy
+    float TagVarCSV_trackSumJetDeltaR;                    // pseudoangular distance between jet axis and track fourvector sum
+    float TagVarCSV_trackSip2dValAboveCharm;              // track 2D signed impact parameter of first track lifting mass above charm
+    float TagVarCSV_trackSip2dSigAboveCharm;              // track 2D signed impact parameter significance of first track lifting mass above charm
+    float TagVarCSV_trackSip3dValAboveCharm;              // track 3D signed impact parameter of first track lifting mass above charm
+    float TagVarCSV_trackSip3dSigAboveCharm;              // track 3D signed impact parameter significance of first track lifting mass above charm
+    float TagVarCSV_vertexCategory;                       // category of secondary vertex (Reco, Pseudo, No)
+    float TagVarCSV_jetNSecondaryVertices;                // number of reconstructed possible secondary vertices in jet
+    float TagVarCSV_vertexMass;                           // mass of track sum at secondary vertex
+    float TagVarCSV_vertexNTracks;                        // number of tracks at secondary vertex
+    float TagVarCSV_vertexEnergyRatio;                    // ratio of energy at secondary vertex over total energy
+    float TagVarCSV_vertexJetDeltaR;                      // pseudoangular distance between jet axis and secondary vertex direction
+    float TagVarCSV_flightDistance2dVal;                  // transverse distance between primary and secondary vertex
+    float TagVarCSV_flightDistance2dSig;                  // transverse distance significance between primary and secondary vertex
+    float TagVarCSV_flightDistance3dVal;                  // distance between primary and secondary vertex
+    float TagVarCSV_flightDistance3dSig;                  // distance significance between primary and secondary vertex
+    // per jet per track
+    float TagVarCSV_trackSip2dSig_Leading;                // highest track 2D signed IP of tracks belonging to a given jet   
+    float TagVarCSV_trackSip2dSig_SecondLeading;          // second highest track 2D signed IP of tracks belonging to a given jet
+    float TagVarCSV_trackSip2dSig_ThirdLeading;           // third highest track 2D signed IP of tracks belonging to a given jet
+    float TagVarCSV_trackSip3dSig_Leading;                // highest track 3D signed IP of tracks belonging to a given jet   
+    float TagVarCSV_trackSip3dSig_SecondLeading;          // second highest track 3D signed IP of tracks belonging to a given jet
+    float TagVarCSV_trackSip3dSig_ThirdLeading;           // third highest track 3D signed IP of tracks belonging to a given jet
+    // per jet per etaRel track
+    float TagVarCSV_trackEtaRel_Lowest;                   // lowest track eta relative to jet axis
+    float TagVarCSV_trackEtaRel_SecondLowest;             // second lowest track eta relative to jet axis
+    float TagVarCSV_trackEtaRel_ThirdLowest;              // third lowest track eta relative to jet axis
+
+        readerReco->AddVariable("TagVarCSV_jetNTracks",&TagVarCSV_jetNTracks);
+        readerReco->AddVariable("TagVarCSV_jetNTracksEtaRel",&TagVarCSV_jetNTracksEtaRel);
+        readerReco->AddVariable("TagVarCSV_trackSip3dSig_Leading",&TagVarCSV_trackSip3dSig_Leading);
+        readerReco->AddVariable("TagVarCSV_trackSip3dSig_SecondLeading",&TagVarCSV_trackSip3dSig_SecondLeading);
+        readerReco->AddVariable("TagVarCSV_trackSip3dSig_ThirdLeading",&TagVarCSV_trackSip3dSig_ThirdLeading);
+        readerReco->AddVariable("TagVarCSV_trackSip2dSigAboveCharm",&TagVarCSV_trackSip2dSigAboveCharm);
+        readerReco->AddVariable("TagVarCSV_trackEtaRel_Lowest",&TagVarCSV_trackEtaRel_Lowest);
+        readerReco->AddVariable("TagVarCSV_trackEtaRel_SecondLowest",&TagVarCSV_trackEtaRel_SecondLowest);
+        readerReco->AddVariable("TagVarCSV_trackEtaRel_ThirdLowest",&TagVarCSV_trackEtaRel_ThirdLowest);
+        readerReco->AddVariable("TagVarCSV_vertexMass",&TagVarCSV_vertexMass);
+        readerReco->AddVariable("TagVarCSV_vertexNTracks",&TagVarCSV_vertexNTracks);
+        readerReco->AddVariable("TagVarCSV_vertexEnergyRatio",&TagVarCSV_vertexEnergyRatio);
+        readerReco->AddVariable("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
+
+        readerReco->AddSpectator("Jet_pt",&Jet_pt);
+        readerReco->AddSpectator("Jet_eta",&Jet_eta);
+        readerReco->AddSpectator("Jet_phi",&Jet_phi);
+        readerReco->AddSpectator("Jet_mass",&Jet_mass);
+        readerReco->AddSpectator("Jet_flavour",&Jet_flavour);
+        readerReco->AddSpectator("Jet_nbHadrons",&Jet_nbHadrons);
+        readerReco->AddSpectator("Jet_JP",&Jet_JP);
+        readerReco->AddSpectator("Jet_JBP",&Jet_JBP);
+        readerReco->AddSpectator("Jet_CSV",&Jet_CSV);
+        readerReco->AddSpectator("Jet_CSVIVF",&Jet_CSVIVF);
+        readerReco->AddSpectator("TagVarCSV_trackJetPt",&TagVarCSV_trackJetPt);
+        readerReco->AddSpectator("TagVarCSV_trackSumJetEtRatio",&TagVarCSV_trackSumJetEtRatio);
+        readerReco->AddSpectator("TagVarCSV_trackSumJetDeltaR",&TagVarCSV_trackSumJetDeltaR);
+        readerReco->AddSpectator("TagVarCSV_trackSip2dValAboveCharm",&TagVarCSV_trackSip2dValAboveCharm);
+        readerReco->AddSpectator("TagVarCSV_trackSip3dValAboveCharm",&TagVarCSV_trackSip3dValAboveCharm);
+        readerReco->AddSpectator("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
+        readerReco->AddSpectator("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
+        readerReco->AddSpectator("TagVarCSV_jetNSecondaryVertices",&TagVarCSV_jetNSecondaryVertices);
+        readerReco->AddSpectator("TagVarCSV_vertexJetDeltaR",&TagVarCSV_vertexJetDeltaR);
+        readerReco->AddSpectator("TagVarCSV_flightDistance2dVal",&TagVarCSV_flightDistance2dVal);
+        readerReco->AddSpectator("TagVarCSV_flightDistance3dVal",&TagVarCSV_flightDistance3dVal);
+        readerReco->AddSpectator("TagVarCSV_flightDistance3dSig",&TagVarCSV_flightDistance3dSig);
+        readerReco->AddSpectator("TagVarCSV_trackSip2dSig_Leading",&TagVarCSV_trackSip2dSig_Leading);
+        readerReco->AddSpectator("TagVarCSV_trackSip2dSig_SecondLeading",&TagVarCSV_trackSip2dSig_SecondLeading);
+        readerReco->AddSpectator("TagVarCSV_trackSip2dSig_ThirdLeading",&TagVarCSV_trackSip2dSig_ThirdLeading);
+
+        readerReco->BookMVA( "BDTG method", "weights/TMVATrainer_VtxCat0_BDTG.weights.xml" );
+
+        readerPseudo->AddVariable("TagVarCSV_jetNTracks",&TagVarCSV_jetNTracks);
+        readerPseudo->AddVariable("TagVarCSV_jetNTracksEtaRel",&TagVarCSV_jetNTracksEtaRel);
+        readerPseudo->AddVariable("TagVarCSV_trackSip3dSig_Leading",&TagVarCSV_trackSip3dSig_Leading);
+        readerPseudo->AddVariable("TagVarCSV_trackSip3dSig_SecondLeading",&TagVarCSV_trackSip3dSig_SecondLeading);
+        readerPseudo->AddVariable("TagVarCSV_trackSip3dSig_ThirdLeading",&TagVarCSV_trackSip3dSig_ThirdLeading);
+        readerPseudo->AddVariable("TagVarCSV_trackSip2dSigAboveCharm",&TagVarCSV_trackSip2dSigAboveCharm);
+        readerPseudo->AddVariable("TagVarCSV_trackEtaRel_Lowest",&TagVarCSV_trackEtaRel_Lowest);
+        readerPseudo->AddVariable("TagVarCSV_trackEtaRel_SecondLowest",&TagVarCSV_trackEtaRel_SecondLowest);
+        readerPseudo->AddVariable("TagVarCSV_trackEtaRel_ThirdLowest",&TagVarCSV_trackEtaRel_ThirdLowest);
+        readerPseudo->AddVariable("TagVarCSV_vertexMass",&TagVarCSV_vertexMass);
+        readerPseudo->AddVariable("TagVarCSV_vertexNTracks",&TagVarCSV_vertexNTracks);
+        readerPseudo->AddVariable("TagVarCSV_vertexEnergyRatio",&TagVarCSV_vertexEnergyRatio);
+
+        readerPseudo->AddSpectator("Jet_pt",&Jet_pt);
+        readerPseudo->AddSpectator("Jet_eta",&Jet_eta);
+        readerPseudo->AddSpectator("Jet_phi",&Jet_phi);
+        readerPseudo->AddSpectator("Jet_mass",&Jet_mass);
+        readerPseudo->AddSpectator("Jet_flavour",&Jet_flavour);
+        readerPseudo->AddSpectator("Jet_nbHadrons",&Jet_nbHadrons);
+        readerPseudo->AddSpectator("Jet_JP",&Jet_JP);
+        readerPseudo->AddSpectator("Jet_JBP",&Jet_JBP);
+        readerPseudo->AddSpectator("Jet_CSV",&Jet_CSV);
+        readerPseudo->AddSpectator("Jet_CSVIVF",&Jet_CSVIVF);
+        readerPseudo->AddSpectator("TagVarCSV_trackJetPt",&TagVarCSV_trackJetPt);
+        readerPseudo->AddSpectator("TagVarCSV_trackSumJetEtRatio",&TagVarCSV_trackSumJetEtRatio);
+        readerPseudo->AddSpectator("TagVarCSV_trackSumJetDeltaR",&TagVarCSV_trackSumJetDeltaR);
+        readerPseudo->AddSpectator("TagVarCSV_trackSip2dValAboveCharm",&TagVarCSV_trackSip2dValAboveCharm);
+        readerPseudo->AddSpectator("TagVarCSV_trackSip3dValAboveCharm",&TagVarCSV_trackSip3dValAboveCharm);
+        readerPseudo->AddSpectator("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
+        readerPseudo->AddSpectator("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
+        readerPseudo->AddSpectator("TagVarCSV_jetNSecondaryVertices",&TagVarCSV_jetNSecondaryVertices);
+        readerPseudo->AddSpectator("TagVarCSV_vertexJetDeltaR",&TagVarCSV_vertexJetDeltaR);
+        readerPseudo->AddSpectator("TagVarCSV_flightDistance2dVal",&TagVarCSV_flightDistance2dVal);
+        readerPseudo->AddSpectator("TagVarCSV_flightDistance3dVal",&TagVarCSV_flightDistance3dVal);
+        readerPseudo->AddSpectator("TagVarCSV_flightDistance3dSig",&TagVarCSV_flightDistance3dSig);
+        readerPseudo->AddSpectator("TagVarCSV_trackSip2dSig_Leading",&TagVarCSV_trackSip2dSig_Leading);
+        readerPseudo->AddSpectator("TagVarCSV_trackSip2dSig_SecondLeading",&TagVarCSV_trackSip2dSig_SecondLeading);
+        readerPseudo->AddSpectator("TagVarCSV_trackSip2dSig_ThirdLeading",&TagVarCSV_trackSip2dSig_ThirdLeading);
+        readerPseudo->AddSpectator("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
+
+        readerPseudo->BookMVA( "BDTG method", "weights/TMVATrainer_VtxCat1_BDTG.weights.xml" );
+
+        readerNo->AddVariable("TagVarCSV_jetNTracks",&TagVarCSV_jetNTracks);
+        readerNo->AddVariable("TagVarCSV_trackSip3dSig_Leading",&TagVarCSV_trackSip3dSig_Leading);
+        readerNo->AddVariable("TagVarCSV_trackSip3dSig_SecondLeading",&TagVarCSV_trackSip3dSig_SecondLeading);
+        readerNo->AddVariable("TagVarCSV_trackSip3dSig_ThirdLeading",&TagVarCSV_trackSip3dSig_ThirdLeading);
+        readerNo->AddVariable("TagVarCSV_trackSip2dSigAboveCharm",&TagVarCSV_trackSip2dSigAboveCharm);
+
+        readerNo->AddSpectator("Jet_pt",&Jet_pt);
+        readerNo->AddSpectator("Jet_eta",&Jet_eta);
+        readerNo->AddSpectator("Jet_phi",&Jet_phi);
+        readerNo->AddSpectator("Jet_mass",&Jet_mass);
+        readerNo->AddSpectator("Jet_flavour",&Jet_flavour);
+        readerNo->AddSpectator("Jet_nbHadrons",&Jet_nbHadrons);
+        readerNo->AddSpectator("Jet_JP",&Jet_JP);
+        readerNo->AddSpectator("Jet_JBP",&Jet_JBP);
+        readerNo->AddSpectator("Jet_CSV",&Jet_CSV);
+        readerNo->AddSpectator("Jet_CSVIVF",&Jet_CSVIVF);
+        readerNo->AddSpectator("TagVarCSV_trackJetPt",&TagVarCSV_trackJetPt);
+        readerNo->AddSpectator("TagVarCSV_trackSumJetEtRatio",&TagVarCSV_trackSumJetEtRatio);
+        readerNo->AddSpectator("TagVarCSV_trackSumJetDeltaR",&TagVarCSV_trackSumJetDeltaR);
+        readerNo->AddSpectator("TagVarCSV_trackSip2dValAboveCharm",&TagVarCSV_trackSip2dValAboveCharm);
+        readerNo->AddSpectator("TagVarCSV_trackSip3dValAboveCharm",&TagVarCSV_trackSip3dValAboveCharm);
+        readerNo->AddSpectator("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
+        readerNo->AddSpectator("TagVarCSV_jetNSecondaryVertices",&TagVarCSV_jetNSecondaryVertices);
+        readerNo->AddSpectator("TagVarCSV_vertexJetDeltaR",&TagVarCSV_vertexJetDeltaR);
+        readerNo->AddSpectator("TagVarCSV_flightDistance2dVal",&TagVarCSV_flightDistance2dVal);
+        readerNo->AddSpectator("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
+        readerNo->AddSpectator("TagVarCSV_flightDistance3dVal",&TagVarCSV_flightDistance3dVal);
+        readerNo->AddSpectator("TagVarCSV_flightDistance3dSig",&TagVarCSV_flightDistance3dSig);
+        readerNo->AddSpectator("TagVarCSV_trackSip2dSig_Leading",&TagVarCSV_trackSip2dSig_Leading);
+        readerNo->AddSpectator("TagVarCSV_trackSip2dSig_SecondLeading",&TagVarCSV_trackSip2dSig_SecondLeading);
+        readerNo->AddSpectator("TagVarCSV_trackSip2dSig_ThirdLeading",&TagVarCSV_trackSip2dSig_ThirdLeading);
+        readerNo->AddSpectator("TagVarCSV_jetNTracksEtaRel",&TagVarCSV_jetNTracksEtaRel);
+        readerNo->AddSpectator("TagVarCSV_trackEtaRel_Lowest",&TagVarCSV_trackEtaRel_Lowest);
+        readerNo->AddSpectator("TagVarCSV_trackEtaRel_SecondLowest",&TagVarCSV_trackEtaRel_SecondLowest);
+        readerNo->AddSpectator("TagVarCSV_trackEtaRel_ThirdLowest",&TagVarCSV_trackEtaRel_ThirdLowest);
+        readerNo->AddSpectator("TagVarCSV_vertexMass",&TagVarCSV_vertexMass);
+        readerNo->AddSpectator("TagVarCSV_vertexNTracks",&TagVarCSV_vertexNTracks);
+        readerNo->AddSpectator("TagVarCSV_vertexEnergyRatio",&TagVarCSV_vertexEnergyRatio);
+        readerNo->AddSpectator("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
+
+        readerNo->BookMVA( "BDTG method", "weights/TMVATrainer_VtxCat2_BDTG.weights.xml" );
+
+
+        // input tree and such
+        // TString rootfile = TString::Format("CMSSW_Job_%i.root",jobNum);
+        // TString infilename = "/cms/skaplan/BoostedBTagValidation/CMSSW_5_3_18/src/MyAnalysis/TagVarExtractor/test/qcd300-470_output/output/"+rootfile;
+        TString infilename="QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_JetTaggingVariables_evaluation.root";
+        TFile in(infilename);
+        TTree* intree = (TTree*)in.Get("tagVars/ttree");
+
+        //set the branches to point to address of the variables declared above
+        intree->SetBranchAddress("TagVarCSV_jetNTracks",&TagVarCSV_jetNTracks);
+        intree->SetBranchAddress("TagVarCSV_jetNTracksEtaRel",&TagVarCSV_jetNTracksEtaRel);
+        intree->SetBranchAddress("TagVarCSV_trackSip3dSig_Leading",&TagVarCSV_trackSip3dSig_Leading);
+        intree->SetBranchAddress("TagVarCSV_trackSip3dSig_SecondLeading",&TagVarCSV_trackSip3dSig_SecondLeading);
+        intree->SetBranchAddress("TagVarCSV_trackSip3dSig_ThirdLeading",&TagVarCSV_trackSip3dSig_ThirdLeading);
+        intree->SetBranchAddress("TagVarCSV_trackSip2dSigAboveCharm",&TagVarCSV_trackSip2dSigAboveCharm);
+        intree->SetBranchAddress("TagVarCSV_trackEtaRel_Lowest",&TagVarCSV_trackEtaRel_Lowest);
+        intree->SetBranchAddress("TagVarCSV_trackEtaRel_SecondLowest",&TagVarCSV_trackEtaRel_SecondLowest);
+        intree->SetBranchAddress("TagVarCSV_trackEtaRel_ThirdLowest",&TagVarCSV_trackEtaRel_ThirdLowest);
+        intree->SetBranchAddress("TagVarCSV_vertexMass",&TagVarCSV_vertexMass);
+        intree->SetBranchAddress("TagVarCSV_vertexNTracks",&TagVarCSV_vertexNTracks);
+        intree->SetBranchAddress("TagVarCSV_vertexEnergyRatio",&TagVarCSV_vertexEnergyRatio);
+        intree->SetBranchAddress("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
+        intree->SetBranchAddress("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
+        intree->SetBranchAddress("Jet_pt",&Jet_pt);
+        intree->SetBranchAddress("Jet_eta",&Jet_eta);
+        intree->SetBranchAddress("Jet_phi",&Jet_phi);
+        intree->SetBranchAddress("Jet_mass",&Jet_mass);
+        intree->SetBranchAddress("Jet_flavour",&Jet_flavour);
+        intree->SetBranchAddress("Jet_nbHadrons",&Jet_nbHadrons);
+        intree->SetBranchAddress("Jet_JP",&Jet_JP);
+        intree->SetBranchAddress("Jet_JBP",&Jet_JBP);
+        intree->SetBranchAddress("Jet_CSV",&Jet_CSV);
+        intree->SetBranchAddress("Jet_CSVIVF",&Jet_CSVIVF);
+        intree->SetBranchAddress("TagVarCSV_trackJetPt",&TagVarCSV_trackJetPt);
+        intree->SetBranchAddress("TagVarCSV_trackSumJetEtRatio",&TagVarCSV_trackSumJetEtRatio);
+        intree->SetBranchAddress("TagVarCSV_trackSumJetDeltaR",&TagVarCSV_trackSumJetDeltaR);
+        intree->SetBranchAddress("TagVarCSV_trackSip2dValAboveCharm",&TagVarCSV_trackSip2dValAboveCharm);
+        intree->SetBranchAddress("TagVarCSV_trackSip3dValAboveCharm",&TagVarCSV_trackSip3dValAboveCharm);
+        intree->SetBranchAddress("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
+        intree->SetBranchAddress("TagVarCSV_jetNSecondaryVertices",&TagVarCSV_jetNSecondaryVertices);
+        intree->SetBranchAddress("TagVarCSV_vertexJetDeltaR",&TagVarCSV_vertexJetDeltaR);
+        intree->SetBranchAddress("TagVarCSV_flightDistance2dVal",&TagVarCSV_flightDistance2dVal);
+        intree->SetBranchAddress("TagVarCSV_flightDistance3dVal",&TagVarCSV_flightDistance3dVal);
+        intree->SetBranchAddress("TagVarCSV_flightDistance3dSig",&TagVarCSV_flightDistance3dSig);
+        intree->SetBranchAddress("TagVarCSV_trackSip2dSig_Leading",&TagVarCSV_trackSip2dSig_Leading);
+        intree->SetBranchAddress("TagVarCSV_trackSip2dSig_SecondLeading",&TagVarCSV_trackSip2dSig_SecondLeading);
+        intree->SetBranchAddress("TagVarCSV_trackSip2dSig_ThirdLeading",&TagVarCSV_trackSip2dSig_ThirdLeading);
+
+        TH1F* hBDTGDiscSig = new TH1F("hBDTGDiscSig","",1000,-5,5);
+        TH1F* hBDTGDiscBkg = new TH1F("hBDTGDiscBkg","",1000,-5,5);
+
+        TH1F* hCSVDiscSig = new TH1F("hCSVDiscSig","",1000,-5,5);
+        TH1F* hCSVDiscBkg = new TH1F("hCSVDiscBkg","",1000,-5,5);
+
+        TH1F* hCSVIVFDiscSig = new TH1F("hCSVIVFDiscSig","",1000,-5,5);
+        TH1F* hCSVIVFDiscBkg = new TH1F("hCSVIVFDiscBkg","",1000,-5,5);
+
+        hBDTGDiscSig->GetXaxis()->SetTitle("BDTG Discriminant");
+        hBDTGDiscBkg->GetXaxis()->SetTitle("BDTG Discriminant");
+
+        hCSVDiscSig->GetXaxis()->SetTitle("CSV Discriminant");
+        hCSVDiscBkg->GetXaxis()->SetTitle("CSV Discriminant");
+        hCSVIVFDiscSig->GetXaxis()->SetTitle("CSV Discriminant");
+        hCSVIVFDiscBkg->GetXaxis()->SetTitle("CSV Discriminant");
+
+        std::cout << "Now looping over " << intree->GetEntries() << " entries..." << std::endl;
+        for(Long64_t iEntry = 0; iEntry < intree->GetEntries(); iEntry++){
+                if (iEntry % 1000 == 0) std::cout << "Processing Entry #" << iEntry << std::endl;
+                intree->GetEntry(iEntry); //all variables now filled!
+                bool isB = ( abs(int(Jet_flavour)) == 5 );
+                bool isLight = ( abs(int(Jet_flavour)) != 5 && abs(int(Jet_flavour)) != 4 );
+                float BDTG_Disc = -10.;
+                if(TagVarCSV_vertexCategory == 0)
+                    BDTG_Disc = readerReco->EvaluateMVA("BDTG method");
+                else if(TagVarCSV_vertexCategory == 1)
+                    BDTG_Disc = readerPseudo->EvaluateMVA("BDTG method");
+                else
+                    BDTG_Disc = readerNo->EvaluateMVA("BDTG method");
+                if (isB) {
+                        hBDTGDiscSig->Fill(BDTG_Disc);
+                        hCSVDiscSig->Fill(Jet_CSV);
+                        hCSVIVFDiscSig->Fill(Jet_CSVIVF);
+                }
+                else if (isLight) {
+                        hBDTGDiscBkg->Fill(BDTG_Disc);
+                        hCSVDiscBkg->Fill(Jet_CSV);
+                        hCSVIVFDiscBkg->Fill(Jet_CSVIVF);
+                }
+        }
+
+        TString outname = "QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtxCategory.root";
+        TFile out(outname,"RECREATE");
+        
+        hBDTGDiscSig->Write();
+        hBDTGDiscBkg->Write();
+
+        hCSVDiscSig->Write();
+        hCSVDiscBkg->Write();
+        hCSVIVFDiscSig->Write();
+        hCSVIVFDiscBkg->Write();
+
+        out.Close();
+
+        delete readerReco;
+	delete readerPseudo;
+	delete readerNo;
+        delete hBDTGDiscSig;
+        delete hBDTGDiscBkg;
+        delete hCSVDiscSig;
+        delete hCSVDiscBkg;
+        delete hCSVIVFDiscSig;
+        delete hCSVIVFDiscBkg;
+
+        std::cout << "Done analyzing!" << std::endl;
+
+
+
+
+
+}
