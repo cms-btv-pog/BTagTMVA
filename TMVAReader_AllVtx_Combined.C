@@ -82,10 +82,10 @@ void TMVAReader(int vtxCategory=-1){
 
     reader->AddVariable("TagVarCSV_vertexCategory",&TagVarCSV_vertexCategory);
     reader->AddVariable("TagVarCSV_jetNTracks",&TagVarCSV_jetNTracks);
-    reader->AddVariable("TagVarCSV_trackSip2dSig_0",&TagVarCSV_trackSip2dSig_0);
-    reader->AddVariable("TagVarCSV_trackSip2dSig_1",&TagVarCSV_trackSip2dSig_1);
-    reader->AddVariable("TagVarCSV_trackSip2dSig_2",&TagVarCSV_trackSip2dSig_2);
-    reader->AddVariable("TagVarCSV_trackSip2dSig_3",&TagVarCSV_trackSip2dSig_3);
+    //reader->AddVariable("TagVarCSV_trackSip2dSig_0",&TagVarCSV_trackSip2dSig_0);
+    //reader->AddVariable("TagVarCSV_trackSip2dSig_1",&TagVarCSV_trackSip2dSig_1);
+    //reader->AddVariable("TagVarCSV_trackSip2dSig_2",&TagVarCSV_trackSip2dSig_2);
+    //reader->AddVariable("TagVarCSV_trackSip2dSig_3",&TagVarCSV_trackSip2dSig_3);
     reader->AddVariable("TagVarCSV_trackSip3dSig_0",&TagVarCSV_trackSip3dSig_0);
     reader->AddVariable("TagVarCSV_trackSip3dSig_1",&TagVarCSV_trackSip3dSig_1);
     reader->AddVariable("TagVarCSV_trackSip3dSig_2",&TagVarCSV_trackSip3dSig_2);
@@ -95,7 +95,7 @@ void TMVAReader(int vtxCategory=-1){
     reader->AddVariable("TagVarCSV_trackPtRel_2",&TagVarCSV_trackPtRel_2);
     reader->AddVariable("TagVarCSV_trackPtRel_3",&TagVarCSV_trackPtRel_3);
     reader->AddVariable("TagVarCSV_trackSip2dSigAboveCharm",&TagVarCSV_trackSip2dSigAboveCharm);
-    reader->AddVariable("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
+    //reader->AddVariable("TagVarCSV_trackSip3dSigAboveCharm",&TagVarCSV_trackSip3dSigAboveCharm);
     reader->AddVariable("TagVarCSV_trackSumJetEtRatio",&TagVarCSV_trackSumJetEtRatio);
     reader->AddVariable("TagVarCSV_trackSumJetDeltaR",&TagVarCSV_trackSumJetDeltaR);
     reader->AddVariable("TagVarCSV_jetNTracksEtaRel",&TagVarCSV_jetNTracksEtaRel);
@@ -108,7 +108,7 @@ void TMVAReader(int vtxCategory=-1){
     reader->AddVariable("TagVarCSV_vertexEnergyRatio",&TagVarCSV_vertexEnergyRatio);
     reader->AddVariable("TagVarCSV_vertexJetDeltaR",&TagVarCSV_vertexJetDeltaR);
     reader->AddVariable("TagVarCSV_flightDistance2dSig",&TagVarCSV_flightDistance2dSig);
-    reader->AddVariable("TagVarCSV_flightDistance3dSig",&TagVarCSV_flightDistance3dSig);
+    //reader->AddVariable("TagVarCSV_flightDistance3dSig",&TagVarCSV_flightDistance3dSig);
 
     reader->AddSpectator("Jet_pt",&Jet_pt);
     reader->AddSpectator("Jet_eta",&Jet_eta);

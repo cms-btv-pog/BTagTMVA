@@ -106,15 +106,16 @@ def makePlots():
     ordering = [] # vectors storing the order of legend entries
     graphMap = {} # maps to hold legend entries and TGraph*s
 
-    graphMap["CSV"]                    = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
-    graphMap["CSVv2+IVF"]              = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
-    graphMap["BDTG T1000D3 BvsL"]      = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
-    #graphMap["BDTG T1000D3 BvsL+BvsC"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_Combined.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_Combined.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["CSV"]           = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
+    graphMap["CSVv2+IVF"]     = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
+    graphMap["BDTG BvsL"]     = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
+    #graphMap["BDTG BvsL"]     = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL_reduced.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsL_reduced.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["BDTG Combined"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_Combined.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_Combined.root","hBDTGDiscSig","hBDTGDiscBkg")
 
     ordering.append("CSV")
     ordering.append("CSVv2+IVF")
-    ordering.append("BDTG T1000D3 BvsL")
-    #ordering.append("BDTG T1000D3 BvsL+BvsC")
+    ordering.append("BDTG BvsL")
+    ordering.append("BDTG Combined")
 
     plotPerformanceCurves(graphMap,ordering,"","b-tagging efficiency (b jets)","mistag rate (light-flavor jets)","All Vtx categories","tmvacomp_BDTG_CSV_AllVtx_BvsL.pdf",0, 1, 1E-4, 1,1)
 
@@ -123,15 +124,15 @@ def makePlots():
     ordering = []
     graphMap = {}
 
-    graphMap["CSV"]                               = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
-    graphMap["CSVv2+IVF"]                         = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
-    graphMap["BDTG T1000D3 BvsL RecoVtxTraining"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
-    graphMap["BDTG T1000D3 BvsL"]                 = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_AllVtxTraining_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_AllVtxTraining_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["CSV"]                       = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
+    graphMap["CSVv2+IVF"]                 = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
+    graphMap["BDTG BvsL RecoVtxTraining"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["BDTG BvsL"]                 = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_AllVtxTraining_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_RecoVtx_AllVtxTraining_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
 
     ordering.append("CSV")
     ordering.append("CSVv2+IVF")
-    ordering.append("BDTG T1000D3 BvsL")
-    ordering.append("BDTG T1000D3 BvsL RecoVtxTraining")
+    ordering.append("BDTG BvsL")
+    ordering.append("BDTG BvsL RecoVtxTraining")
 
     plotPerformanceCurves(graphMap,ordering,"","b-tagging efficiency (b jets)","mistag rate (light-flavor jets)","RecoVertex category","tmvacomp_BDTG_CSV_RecoVtx_BvsL.pdf",0, 1, 1E-4, 1,1)
 
@@ -140,15 +141,15 @@ def makePlots():
     ordering = []
     graphMap = {}
 
-    graphMap["CSV"]                                 = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
-    graphMap["CSVv2+IVF"]                           = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
-    graphMap["BDTG T1000D3 BvsL"]                   = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
-    graphMap["BDTG T1000D3 BvsL PseudoVtxTraining"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_AllVtxTraining_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_AllVtxTraining_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["CSV"]                         = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
+    graphMap["CSVv2+IVF"]                   = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
+    graphMap["BDTG BvsL"]                   = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["BDTG BvsL PseudoVtxTraining"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_AllVtxTraining_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_PseudoVtx_AllVtxTraining_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
 
     ordering.append("CSV")
     ordering.append("CSVv2+IVF")
-    ordering.append("BDTG T1000D3 BvsL")
-    ordering.append("BDTG T1000D3 BvsL PseudoVtxTraining")
+    ordering.append("BDTG BvsL")
+    ordering.append("BDTG BvsL PseudoVtxTraining")
 
     plotPerformanceCurves(graphMap,ordering,"","b-tagging efficiency (b jets)","mistag rate (light-flavor jets)","PseudoVertex category","tmvacomp_BDTG_CSV_PseudoVtx_BvsL.pdf",0, 1, 1E-4, 1,1)
 
@@ -157,15 +158,15 @@ def makePlots():
     ordering = []
     graphMap = {}
 
-    graphMap["CSV"]                             = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
-    graphMap["CSVv2+IVF"]                       = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
-    graphMap["BDTG T1000D3 BvsL NoVtxTraining"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
-    graphMap["BDTG T1000D3 BvsL"]               = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_AllVtxTraining_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_AllVtxTraining_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["CSV"]                     = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","hCSVDiscSig","hCSVDiscBkg")
+    graphMap["CSVv2+IVF"]               = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
+    graphMap["BDTG BvsL NoVtxTraining"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["BDTG BvsL"]               = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_AllVtxTraining_BvsL.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_NoVtx_AllVtxTraining_BvsL.root","hBDTGDiscSig","hBDTGDiscBkg")
 
     ordering.append("CSV")
     ordering.append("CSVv2+IVF")
-    ordering.append("BDTG T1000D3 BvsL")
-    ordering.append("BDTG T1000D3 BvsL NoVtxTraining")
+    ordering.append("BDTG BvsL")
+    ordering.append("BDTG BvsL NoVtxTraining")
 
     plotPerformanceCurves(graphMap,ordering,"","b-tagging efficiency (b jets)","mistag rate (light-flavor jets)","NoVertex category","tmvacomp_BDTG_CSV_NoVtx_BvsL.pdf",0, 1, 1E-4, 1,1)
 
@@ -174,13 +175,13 @@ def makePlots():
     ordering = []
     graphMap = {}
 
-    graphMap["CSV"]               = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","hCSVDiscSig","hCSVDiscBkg")
-    graphMap["CSVv2+IVF"]         = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
-    graphMap["BDTG T1000D3 BvsC"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","hBDTGDiscSig","hBDTGDiscBkg")
+    graphMap["CSV"]       = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","hCSVDiscSig","hCSVDiscBkg")
+    graphMap["CSVv2+IVF"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","hCSVIVFDiscSig","hCSVIVFDiscBkg")
+    graphMap["BDTG BvsC"] = getPerformanceCurve("QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","QCD_Pt-120to170_TuneZ2star_8TeV_pythia6_BDTG_vs_CSV_AllVtx_BvsC.root","hBDTGDiscSig","hBDTGDiscBkg")
 
     ordering.append("CSV")
     ordering.append("CSVv2+IVF")
-    ordering.append("BDTG T1000D3 BvsC")
+    ordering.append("BDTG BvsC")
 
     plotPerformanceCurves(graphMap,ordering,"","b-tagging efficiency (b jets)","mistag rate (c jets)","All Vtx categories","tmvacomp_BDTG_CSV_AllVtx_BvsC.pdf",0, 1, 1E-4, 1,1)
 

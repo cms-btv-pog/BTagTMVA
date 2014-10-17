@@ -53,10 +53,10 @@ void TMVATrainer(){
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
    factory->AddVariable("TagVarCSV_vertexCategory","TagVarCSV_vertexCategory","units",'F');
    factory->AddVariable("TagVarCSV_jetNTracks","TagVarCSV_jetNTracks","units",'F');
-   factory->AddVariable("TagVarCSV_trackSip2dSig_0","TagVarCSV_trackSip2dSig_0","units",'F');
-   factory->AddVariable("TagVarCSV_trackSip2dSig_1","TagVarCSV_trackSip2dSig_1","units",'F');
-   factory->AddVariable("TagVarCSV_trackSip2dSig_2","TagVarCSV_trackSip2dSig_2","units",'F');
-   factory->AddVariable("TagVarCSV_trackSip2dSig_3","TagVarCSV_trackSip2dSig_3","units",'F');
+   //factory->AddVariable("TagVarCSV_trackSip2dSig_0","TagVarCSV_trackSip2dSig_0","units",'F');
+   //factory->AddVariable("TagVarCSV_trackSip2dSig_1","TagVarCSV_trackSip2dSig_1","units",'F');
+   //factory->AddVariable("TagVarCSV_trackSip2dSig_2","TagVarCSV_trackSip2dSig_2","units",'F');
+   //factory->AddVariable("TagVarCSV_trackSip2dSig_3","TagVarCSV_trackSip2dSig_3","units",'F');
    factory->AddVariable("TagVarCSV_trackSip3dSig_0","TagVarCSV_trackSip3dSig_0","units",'F');
    factory->AddVariable("TagVarCSV_trackSip3dSig_1","TagVarCSV_trackSip3dSig_1","units",'F');
    factory->AddVariable("TagVarCSV_trackSip3dSig_2","TagVarCSV_trackSip3dSig_2","units",'F');
@@ -66,7 +66,7 @@ void TMVATrainer(){
    factory->AddVariable("TagVarCSV_trackPtRel_2","TagVarCSV_trackPtRel_2","units",'F');
    factory->AddVariable("TagVarCSV_trackPtRel_3","TagVarCSV_trackPtRel_3","units",'F');
    factory->AddVariable("TagVarCSV_trackSip2dSigAboveCharm","TagVarCSV_trackSip2dSigAboveCharm","units",'F');
-   factory->AddVariable("TagVarCSV_trackSip3dSigAboveCharm","TagVarCSV_trackSip3dSigAboveCharm","units",'F');
+   //factory->AddVariable("TagVarCSV_trackSip3dSigAboveCharm","TagVarCSV_trackSip3dSigAboveCharm","units",'F');
    factory->AddVariable("TagVarCSV_trackSumJetEtRatio","TagVarCSV_trackSumJetEtRatio","units",'F');
    factory->AddVariable("TagVarCSV_trackSumJetDeltaR","TagVarCSV_trackSumJetDeltaR","units",'F');
    factory->AddVariable("TagVarCSV_jetNTracksEtaRel","TagVarCSV_jetNTracksEtaRel","units",'F');
@@ -79,7 +79,7 @@ void TMVATrainer(){
    factory->AddVariable("TagVarCSV_vertexEnergyRatio","TagVarCSV_vertexEnergyRatio","units",'F');
    factory->AddVariable("TagVarCSV_vertexJetDeltaR","TagVarCSV_vertexJetDeltaR","units",'F');
    factory->AddVariable("TagVarCSV_flightDistance2dSig","TagVarCSV_flightDistance2dSig","units",'F');
-   factory->AddVariable("TagVarCSV_flightDistance3dSig","TagVarCSV_flightDistance3dSig","units",'F');
+   //factory->AddVariable("TagVarCSV_flightDistance3dSig","TagVarCSV_flightDistance3dSig","units",'F');
 
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
@@ -130,8 +130,8 @@ void TMVATrainer(){
    factory->BookMethod( TMVA::Types::kBDT, "BDTG_T1000D3_BvsL",
                           "!H:!V:NTrees=1000:MaxDepth=3:MinNodeSize=1.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
 
-   factory->BookMethod( TMVA::Types::kBDT, "BDTG_T1000D5_BvsL",
-                          "!H:!V:NTrees=1000:MaxDepth=5:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20" );
+   //factory->BookMethod( TMVA::Types::kBDT, "BDTG_T1000D5_BvsL",
+   //                       "!H:!V:NTrees=1000:MaxDepth=5:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20" );
 
 //    // Adaptive Boost
 //    factory->BookMethod( TMVA::Types::kBDT, "BDT",
