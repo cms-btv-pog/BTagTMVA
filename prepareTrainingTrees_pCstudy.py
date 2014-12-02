@@ -1,6 +1,5 @@
 print "Importing ROOT..."
 from ROOT import *
-from numpy import *
 print "done."
 print ""
 
@@ -17,7 +16,7 @@ numBJets = bJetTree.GetEntries()
 # percentages of c jets we will consider (light percentage is 1-c)
 percentC = (0.05,0.25,0.75)
 
-tr = TRandom2()
+tr = TRandom2(0)
 
 for scenario in range( len(percentC) ):
 
