@@ -119,8 +119,8 @@ void TMVATrainer(){
    factory->AddBackgroundTree( bkgTree, backgroundWeight );
 
    // Apply additional cuts on the signal and background samples (can be different)
-   TCut signalCut = "abs(Jet_flavour)==5";
-   TCut backgroundCut = "abs(Jet_flavour)==4";
+   TCut signalCut = "abs(Jet_flavour)==5 && TagVarCSV_vertexCategory>=0";
+   TCut backgroundCut = "abs(Jet_flavour)==4 && TagVarCSV_vertexCategory>=0";
 
    // Tell the factory how to use the training and testing events
    factory->PrepareTrainingAndTestTree( signalCut, backgroundCut,

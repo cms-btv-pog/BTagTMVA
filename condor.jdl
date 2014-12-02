@@ -1,0 +1,10 @@
+universe = vanilla
++AccountingGroup = group_rutgers.skaplan
+Executable = trainer.sh
+should_transfer_files = NO
+Output = /home/skaplan/condor/qcdtraining_combined.stdout
+Error = /home/skaplan/condor/qcdtraining_combined.stderr
+Log = /home/skaplan/condor/qcdtraining_combined.log
+notification = never
+Arguments = TMVATrainer_AllVtx_Multiclass.C /cms/skaplan/mva/TMVA-v4.2.0
+Queue 1
